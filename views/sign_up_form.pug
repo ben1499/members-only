@@ -1,0 +1,25 @@
+extends layout 
+
+block content
+  form(action="" method="POST")
+    .mb-3 
+      label.form-label(for="first_name") First Name
+      input#first_name.form-control(type="text" name="first_name" required value=(user===undefined ? "" : user.first_name)) 
+    .mb-3 
+      label.form-label(for="last_name") Last Name
+      input#last_name.form-control(type="text" name="last_name" required value=(user===undefined ? "" : user.last_name)) 
+    .mb-3 
+      label.form-label(for="email") Email
+      input#email.form-control(type="text" name="email" required value=(user===undefined ? "" : user.email)) 
+    .mb-3 
+      label.form-label(for="password") Password
+      input#password.form-control(type="password" name="password" required ) 
+    .mb-3 
+      label.form-label(for="confirm_password") Confirm Password
+      input#confirm_password.form-control(type="password" name="confirm_password" required) 
+    button.btn.btn-primary(type="submit") Submit
+
+  if errors 
+    ul 
+      each error in errors 
+        li!= error.msg
