@@ -2,11 +2,16 @@ const express = require('express');
 const router = express.Router();
 
 const user_controller = require("../controllers/userController");
+const message_controller = require("../controllers/messageController");
 
+// router.get('/', function(req, res, next) {
+  //   res.render('index', { title: 'Express' });
+  // });
+  
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get("/", message_controller.index_get);
+
+router.post("/", message_controller.message_post)
 
 router.get("/sign-up", user_controller.sign_up_get);
 

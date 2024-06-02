@@ -2,8 +2,34 @@ extends layout
 
 block content
   div.d-flex
-    div
-      h1= title
-      p Login to post a message
+    if currentUser 
+      form(action="" method="POST") 
+        .mb-3 
+          label.form-label(for="title") Title
+          input#title.form-control(type="text" name="title" required value=(message===undefined ? "" : message.title)) 
+        .mb-3 
+          label.form-label(for="content") Content
+          textarea#content.form-control(name="content" required)= message===undefined ? "" : message.content
+        button.btn.btn-primary(type="submit") Submit
+      if errors 
+        ul 
+          each error in errors
+            li!= error.msg
+    else
+      div
+        h1= title
+        p Login to post a message
     div 
       h1 Message Board
+      div 
+        each message in messages 
+          div.card.mb-3
+            div.m-2
+              h4= message.title 
+              p= message.content 
+            .card-footer.d-flex.align-items-center.message-info
+              if message.user.is_member || message.user.is_admin
+                p.m-0 By: #{message.user.full_name}
+                p.m-0= message.date_formatted
+              else
+                p.m-0 By: User
