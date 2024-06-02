@@ -1,3 +1,14 @@
 extends layout 
 
 block content
+  form(action="" method="POST")
+    .mb-3 
+      label.form-label(for="first_name") Email
+      input#first_name.form-control(type="text" name="email" required value=(user===undefined ? "" : user.email)) 
+    .mb-3 
+      label.form-label(for="password") Password
+      input#password.form-control(type="password" name="password" required ) 
+    button.btn.btn-primary(type="submit") Submit
+
+  if error 
+    p= error

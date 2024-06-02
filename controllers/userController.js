@@ -2,11 +2,11 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator")
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const passport = require("passport");
 
 exports.sign_up_get = asyncHandler(async(req, res, next) => {
   res.render("sign_up_form")
 })
-
 
 exports.sign_up_post = [
   body("first_name")
@@ -40,7 +40,6 @@ exports.sign_up_post = [
     return value === req.body.password
   })
   .withMessage("Passwords do not match"),
-
   
   asyncHandler(async(req, res, next) => {
     const errors = validationResult(req);
@@ -65,8 +64,34 @@ exports.sign_up_post = [
           is_member: false
         })
         await user.save();
-        res.redirect("/login_form");
+        res.redirect("/login");
       })
     }
   })
 ]
+
+exports.login_get = asyncHandler(async(req, res, next) => {
+  console.log(res.statusCode);
+  res.render("login_form", { error: req.session.messages ? req.session.messages[0] : undefined });
+})
+
+exports.login_post = [
+  (req, res, next) => {
+    req.session.messages = [];
+    next();
+  },
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureMessage: true,
+  })
+]
+
+exports.logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/")
+  })
+}
