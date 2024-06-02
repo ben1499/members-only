@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+  if currentUser.is_member 
+    h3 You are a member!
+  else
+    form(action="" method="POST")
+      .mb-3 
+        label.form-label(for="member_code") Member Code
+        input#member_code.form-control(type="password" name="member_code" required) 
+      button.btn.btn-primary(type="submit") Submit
+    if (errors && errors.length)
+      ul
+        each error in errors
+          li!= error.msg

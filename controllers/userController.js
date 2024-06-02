@@ -95,3 +95,37 @@ exports.logout = (req, res, next) => {
     res.redirect("/")
   })
 }
+
+exports.member_form_get = (req, res, next) => {
+  res.render("member_form");
+}
+
+exports.member_form_post = [
+  body("member_code")
+  .trim()
+  .isLength({ min: 1 })
+  .escape()
+  .withMessage("Member code must be specified")
+  .custom((value, { req }) => {
+    return value === process.env.MEMBER_CODE
+  })
+  .withMessage("Member code is incorrect"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+       res.render("member_form", {
+        errors: errors.array()
+       });
+    } else {
+      const user = new User({
+        is_member: true,
+        _id: req.user.id
+      })
+
+      await User.findByIdAndUpdate(req.user.id, user);
+      res.redirect("/")
+    }
+  })
+]

@@ -7,7 +7,8 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     header.d-flex
-      h1 Members only 
+      h1
+       a(href="/") Members only 
       ul 
         if !currentUser
           li 
@@ -15,6 +16,8 @@ html
           li 
             a(href="/login") Login
         else
+          li 
+            a(href="/member-form") Become a Member
           li 
             a(href="/logout") Logout
     block content

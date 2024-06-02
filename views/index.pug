@@ -28,7 +28,7 @@ block content
               h4= message.title 
               p= message.content 
             .card-footer.d-flex.align-items-center.message-info
-              if message.user.is_member || message.user.is_admin
+              if currentUser && (currentUser.is_member || currentUser.is_admin)
                 p.m-0 By: #{message.user.full_name}
                 p.m-0= message.date_formatted
               else
