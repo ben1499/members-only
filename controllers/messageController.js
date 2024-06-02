@@ -26,6 +26,8 @@ exports.message_post = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
+    const allMessages = await Message.find({}).populate("user").exec();
+
     const message = new Message({
       title: req.body.title,
       content: req.body.content,
@@ -36,6 +38,7 @@ exports.message_post = [
     if (!errors.isEmpty()) {
       res.render("index", {
         message: message,
+        messages: allMessages,
         errors: errors.array()
       })
     } else {

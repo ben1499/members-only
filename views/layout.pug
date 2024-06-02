@@ -6,18 +6,20 @@ html
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    header.d-flex
-      h1
-       a(href="/") Members only 
-      ul 
-        if !currentUser
-          li 
-            a(href="/sign-up") Sign Up 
-          li 
-            a(href="/login") Login
-        else
-          li 
-            a(href="/member-form") Become a Member
-          li 
-            a(href="/logout") Logout
-    block content
+    nav.navbar.navbar-expand-lg.bg-body-tertiary.p-3.mb-5
+      div.container-fluid
+        a.navbar-brand.fs-2.fw-semibold(href="/") Members only 
+        ul.navbar-nav
+          if !currentUser
+            li.nav-item 
+              a.nav-link(href="/sign-up") Sign Up 
+            li.nav-item 
+              a.nav-link(href="/login") Login
+          else
+            li.nav-item 
+              a.nav-link(href="/member-form") Become a Member
+            li.nav-item 
+              a.nav-link(href="/logout") Logout
+    main
+      block content
+
