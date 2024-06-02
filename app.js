@@ -10,12 +10,33 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const MongoStore = require("connect-mongo");
 const bcrypt = require("bcryptjs");
+const compression = require("compression");
+const helmet = require("helmet");
+const RateLimit = require("express-rate-limit");
 
 const User = require("./models/user");
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 
 const app = express();
+
+// Set up rate-limiter: max 20 requests per minute
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
+
+app.use(limiter);
+app.use(compression());
+
+// Add helmet to the middleware chain.
+// Set CSP headers to allow our Bootstrap to be served
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "cdn.jsdelivr.net"],
+    },
+  }),
+);
 
 mongoose.set("strictQuery", false);
 
@@ -85,7 +106,6 @@ app.use((req, res, next) => {
 })
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

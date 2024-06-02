@@ -4,9 +4,9 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
-exports.sign_up_get = asyncHandler(async(req, res, next) => {
+exports.sign_up_get = (req, res, next) => {
   res.render("sign_up_form")
-})
+}
 
 exports.sign_up_post = [
   body("first_name")
@@ -55,7 +55,6 @@ exports.sign_up_post = [
         errors: errors.array()
       })
     } else {
-      console.log(req.body);
       bcrypt.hash(req.body.password, 10, async(err, hashedPassword) => {
         const user = new User({
           first_name: req.body.first_name,
@@ -73,7 +72,6 @@ exports.sign_up_post = [
 ]
 
 exports.login_get = asyncHandler(async(req, res, next) => {
-  console.log(res.statusCode);
   res.render("login_form", { error: req.session.messages ? req.session.messages[0] : undefined });
 })
 
