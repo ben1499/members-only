@@ -55,13 +55,15 @@ exports.sign_up_post = [
         errors: errors.array()
       })
     } else {
+      console.log(req.body);
       bcrypt.hash(req.body.password, 10, async(err, hashedPassword) => {
         const user = new User({
           first_name: req.body.first_name,
           last_name: req.body.last_name,
           email: req.body.email,
           password: hashedPassword,
-          is_member: false
+          is_member: false,
+          is_admin: req.body.is_admin ? true : false
         })
         await user.save();
         res.redirect("/login");
@@ -107,7 +109,7 @@ exports.member_form_post = [
   .escape()
   .withMessage("Member code must be specified")
   .custom((value, { req }) => {
-    return value === process.env.MEMBER_CODE
+    return value === "member"
   })
   .withMessage("Member code is incorrect"),
 

@@ -17,6 +17,9 @@ block content
     .mb-3 
       label.form-label(for="confirm_password") Confirm Password
       input#confirm_password.form-control(type="password" name="confirm_password" required) 
+    .form-check.mb-3
+      input.form-check-input(type="checkbox" id="is_admin" name="is_admin")
+      label.form-check-label(for="is_admin") Admin?
     button.btn.btn-primary(type="submit") Submit
 
   if errors 

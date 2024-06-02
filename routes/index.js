@@ -13,6 +13,8 @@ router.get("/", message_controller.index_get);
 
 router.post("/", message_controller.message_post)
 
+router.post("/:id/delete", message_controller.message_delete_post);
+
 router.get("/sign-up", user_controller.sign_up_get);
 
 router.post("/sign-up", user_controller.sign_up_post);

@@ -24,10 +24,16 @@ block content
       div 
         each message in messages 
           div.card.mb-3
-            div.m-2
-              h4= message.title 
-              p= message.content 
-            .card-footer.d-flex.align-items-center.message-info
+            div.m-2.d-flex.justify-content-between
+              div
+                h4= message.title 
+                p= message.content
+              if currentUser && currentUser.is_admin
+                div 
+                  form(action=`/${message._id}/delete`, method="POST") 
+                    input#messageid.form-control(type='hidden', name='messageid', value=message._id)
+                    button.btn.btn-danger.btn-sm(type="submit") Delete
+            .card-footer.d-flex.align-items-center.justify-content-between.message-info
               if currentUser && (currentUser.is_member || currentUser.is_admin)
                 p.m-0 By: #{message.user.full_name}
                 p.m-0= message.date_formatted

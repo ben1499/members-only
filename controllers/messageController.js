@@ -44,3 +44,14 @@ exports.message_post = [
     }
   })
 ]
+
+exports.message_delete_post = asyncHandler(async (req, res, next) => {
+  const message = await Message.findById(req.body.messageid).exec();
+
+  if (message === null) {
+    res.redirect("/")
+  } else {
+    await Message.findByIdAndDelete(req.body.messageid);
+    res.redirect("/");
+  }
+})
